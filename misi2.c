@@ -1,16 +1,21 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-void buka_warung();
-void mau_apa();
-void tampilkan_menu();
+void seller_view();
+void customer_view();
+void show_menu(int *id_menu, char (*nama_menu)[10], char (*kategori_menu)[10], int *harga_menu);
 
 int main(){
     int buka;
     int aksi;
-    // buat variabel array untuk menyimpan menu
-    
+    char nama;
+    int id_menu[10] = {1,2,3,4,5,6,7,8,9,10};
+    char nama_menu[10][10] = {"Onigiri","Sake","Ramen","Dorayaki","Ocha","Sushi","Susu","Katsu","Miso","Matcha",};
+    char kategori_menu[10][10] = {"Makanan","Minuman","Makanan","Makanan","Minuman","Makanan","Minuman","Makanan","Makanan","Minuman"};
+    int harga_menu[10] = {7000, 10000, 15000, 5000, 8000, 6000, 8000, 20000, 18000, 10000};
+
     do{
-        buka_warung();
+        seller_view();
         scanf("%d", &buka);
         if(buka == 2){
             // menutup warung
@@ -23,15 +28,18 @@ int main(){
             // clear terminal
             continue;
         }
-        // input nama pelanggan --> masukkan ke array pelanggan
+        scanf("%[^\n]", &nama);
         do{
-            mau_apa();
+            customer_view();
             scanf("%d", &aksi);
             switch(aksi){
                 case 1:
-                    // lihat menu
-                    tampilkan_menu();
+                    printf("\n-----------------------------------------------------\n\n"
+                        "Menampilkan menu\n");
+                    show_menu(id_menu, nama_menu, kategori_menu, harga_menu);
                     printf("Klik enter untuk kembali");
+                    getch();
+                    system("cls");
                     break;
                 case 2:
                     // beli makanan/minuman
@@ -53,14 +61,14 @@ int main(){
     return 0;
 }
 
-void buka_warung(){
+void seller_view(){
     printf("Halo Kang Roger! Silakan pilih salah satu opsi berikut:\n"
     "1. Buka warung (pelanggan masuk)\n"
     "2. Tutup warung (menampilkan riwayat penjualan sejak warung dibuka terakhir kali)\n"
     "Masukkan nomor sesuai dengan pilihan Anda: ");
 }
 
-void mau_apa(){
+void customer_view(){
     printf("Halo {nama_pelanggan}! Silakan pilih salah satu opsi berikut:\n"
     "1. Lihat menu\n"
     "2. Beli makanan/minuman\n"
@@ -68,6 +76,16 @@ void mau_apa(){
     "Masukkan nomor sesuai dengan pilihan Anda: ");
 }
 
-void tampilkan_menu(/*parameter menu berupa array*/){
-    // gunakan perulangan untuk menampilkan elemen2 array : ID menu, nama menu, tipe menu (makanan/minuman), harga
+void show_menu(int *id_menu, char (*nama_menu)[10], char (*kategori_menu)[10], int *harga_menu){
+    printf(
+        "===============================================\n"
+        "|| ID || Menu       || Kategori || Harga     ||\n"
+        "===============================================\n");
+    for(int i = 0; i < 10; i++){
+        printf("|| %-2d |", *(id_menu+i));
+        printf("| %-10s |", *(nama_menu+i));
+        printf("| %-8s |", *(kategori_menu+i));
+        printf("| Rp%-7d ||\n", *(harga_menu+i));
+    }
+    printf("===============================================\n");
 }

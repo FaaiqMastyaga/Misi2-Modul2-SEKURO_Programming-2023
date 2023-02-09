@@ -48,7 +48,8 @@ int main(){
             }
         }while(aksi != 3);
     }while(buka != 2);
-
+    // warung tutup
+    // tampilkan riwayat penjualan hari ini (sejak program dijalankan)
     return 0;
 }
 

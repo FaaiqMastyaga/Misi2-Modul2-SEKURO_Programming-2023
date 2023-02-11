@@ -6,7 +6,7 @@
 void seller_view();
 void customer_view();
 void show_menu(int *id_menu, char (*nama_menu)[10], char (*kategori_menu)[10], int *harga_menu);
-int processing_transaction(int id, int jumlah, int *id_menu, char (*nama_menu)[10], char *kategori_menu[10], int *harga_menu);
+void processing_transaction(int id, int jumlah, int *id_menu, char (*nama_menu)[10], char *kategori_menu[10], int *harga_menu);
 
 int main(){
     // variabel array untuk menu
@@ -27,11 +27,12 @@ int main(){
     int buka;
     int aksi;
     int jumlah;
+    int id;
+    int total_harga;
 
     char nama[BUFFER_SIZE];
     int panjang_nama = 0;
 
-    int id;
 
     do{
         seller_view();
@@ -47,7 +48,6 @@ int main(){
         printf("-------------------------------------------------\n"
         "Masukkan nama Anda: ");
         scanf(" %[^\n]", &nama);
-        // fgets(nama, BUFFER_SIZE, stdin);
         panjang_nama = strlen(nama);
         do{
             customer_view();
@@ -68,16 +68,26 @@ int main(){
                     printf("Masukkan jumlah yang ingin dibeli : ");
                     scanf("%d", &jumlah);
 
-                    int harga = processing_transaction(id, jumlah, id_menu, nama_menu, kategori_menu, harga_menu);
-                    printf("Total harga = %d", harga);
+                    for(int i = 0; i < 10; i++){
+                        if(id == *(id_menu+i)){
+                        total_harga = (jumlah)*(*(harga_menu+i));
+                        
+                        riwayat_id = realloc(riwayat_id, (total_transaksi+1) * sizeof(int*));
+                        riwayat_menu = realloc(riwayat_menu, (total_transaksi+1) * sizeof(char*));
+                        riwayat_jumlah = realloc(riwayat_jumlah, (total_transaksi+1) * sizeof(int*));
+                        riwayat_harga = realloc(riwayat_harga, (total_transaksi+1) * sizeof(int*));
 
+                        riwayat_menu[total_transaksi] = malloc(10 * sizeof(char*));
+
+                        *(riwayat_id+total_transaksi) = *(id_menu+i);
+                        *(riwayat_menu+total_transaksi) = *(nama_menu+i);
+                        *(riwayat_jumlah+total_transaksi) = jumlah;
+                        *(riwayat_harga+total_transaksi) = total_harga;
+
+                    printf("Total harga = %d", total_harga);
                     printf("\nPermintaan Anda sedang diproses\n");
-                    
-
-                    // masukkan id menu --> masukkan id dan nama menu ke array pelanggan
-                    // masukkan jumlah --> masukkan ke array pelanggan
-                    // lakukan operasi perhitungan harga --> masukkan ke array pelanggan
-
+                        }
+                    }
                     break;
                 case 3: /*keluar dari warung*/
                     break;
@@ -87,7 +97,22 @@ int main(){
         }while(aksi != 3);
     }while(buka != 2);
     // warung tutup
-    // tampilkan riwayat penjualan hari ini (sejak program dijalankan)
+    printf("-------------------------------------------------\n");
+    if(total_transaksi == 0){
+        printf("Tidak ada penjualan");
+    }else{
+        printf("Menampilkan riwayat transaksi\n\n"
+            "=======================================================================\n"
+            "|| Nama Pelanggan          || Menu       || Jumlah || Total Harga    ||\n"
+            "=======================================================================\n");
+        for(int i = 0; i < total_transaksi; i++){
+            printf("|| %-23s |", *(riwayat_nama+i));
+            printf("| %-10s |", *(riwayat_menu+i));
+            printf("| %-6s |", *(riwayat_jumlah+i));
+            printf("| Rp%-14d ||\n", *(riwayat_harga+i));
+            }
+            printf("=======================================================================\n");
+    }
     return 0;
 }
 
@@ -122,13 +147,4 @@ void show_menu(int *id_menu, char (*nama_menu)[10], char (*kategori_menu)[10], i
     }
     printf("===============================================\n");
     printf("\nKembali ke pilihan awal\n");
-}
-
-int processing_transaction(int id, int jumlah, int *id_menu, char (*nama_menu)[10], char *kategori_menu[10], int *harga_menu){
-    for(int i = 0; i < 10; i++){
-        if(id == *(id_menu+i)){
-            int harga;
-            return (jumlah)*(*(harga_menu+i));
-        }
-    }
 }

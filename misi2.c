@@ -6,7 +6,6 @@
 void seller_view();
 void customer_view();
 void show_menu(int *id_menu, char (*nama_menu)[10], char (*kategori_menu)[10], int *harga_menu);
-void processing_transaction(int id, int jumlah, int *id_menu, char (*nama_menu)[10], char *kategori_menu[10], int *harga_menu);
 
 int main(){
     // variabel array untuk menu
@@ -105,15 +104,15 @@ int main(){
             "=======================================================================\n"
             "|| Nama Pelanggan          || Menu       || Jumlah || Total Harga    ||\n"
             "=======================================================================\n");
-        for(int i = 0; i < total_transaksi; i++){
-            printf("|| %-23s |", *(riwayat_nama+i));
-            printf("| %-10s |", *(riwayat_menu+i));
-            printf("| %-6s |", *(riwayat_jumlah+i));
-            printf("| Rp%-14d ||\n", *(riwayat_harga+i));
+        for(int j = 0; j < total_transaksi; j++){
+            printf("|| %-23s |", riwayat_nama[j]);
+            printf("| %-10s |", *(riwayat_menu+j));
+            printf("| %-6d |", *(riwayat_jumlah+j));
+            printf("| Rp%-14d ||\n", *(riwayat_harga+j));
             }
-            printf("=======================================================================\n");
-    }
+        printf("=======================================================================\n");
     return 0;
+    }
 }
 
 void seller_view(){
@@ -148,3 +147,4 @@ void show_menu(int *id_menu, char (*nama_menu)[10], char (*kategori_menu)[10], i
     printf("===============================================\n");
     printf("\nKembali ke pilihan awal\n");
 }
+
